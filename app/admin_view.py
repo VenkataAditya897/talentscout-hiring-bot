@@ -6,11 +6,12 @@ import shutil
 import os
 import tempfile
 # Adjust this path if your DB is elsewhere
-DB_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'candidates.db')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # project root directory
+DATA_DB_PATH = os.path.join(BASE_DIR, "data", "candidates.db")
 tmp_db_path = os.path.join(tempfile.gettempdir(), "candidates.db")
 
 if not os.path.exists(tmp_db_path):
-    shutil.copyfile("data/candidates.db", tmp_db_path)
+    shutil.copyfile(DATA_DB_PATH, tmp_db_path)
 
 def load_candidates():
     conn = sqlite3.connect(tmp_db_path)
