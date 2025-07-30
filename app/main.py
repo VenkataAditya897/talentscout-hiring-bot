@@ -50,7 +50,16 @@ if not st.session_state.chat_started:
         "role": "assistant",
         "content": "Please respond with only the answer — no extra sentences like 'My name is...' or 'I am from...'. Let's keep it short and clear ✅"
     })
-        st.session_state.messages.append({"role": "assistant", "content": st.session_state.context.questions[field]})
+        if field is not None:
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": st.session_state.context.questions[field]
+            })
+        else:
+            st.session_state.messages.append({
+                "role": "assistant",
+                "content": "All information already gathered."
+            })
         st.session_state.chat_started = True
         st.rerun()
 else:
