@@ -2,30 +2,40 @@ import streamlit as st
 import sqlite3
 import pandas as pd
 import os
-
+import shutil
+import os
+import tempfile
 # Adjust this path if your DB is elsewhere
 DB_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'candidates.db')
+tmp_db_path = os.path.join(tempfile.gettempdir(), "candidates.db")
+
+if not os.path.exists(tmp_db_path):
+    shutil.copyfile("data/candidates.db", tmp_db_path)
 
 def load_candidates():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(tmp_db_path)
+
     candidates_df = pd.read_sql_query("SELECT * FROM candidates", conn)
     conn.close()
     return candidates_df
 
 def load_questions():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(tmp_db_path)
+
     questions_df = pd.read_sql_query("SELECT * FROM candidate_questions", conn)
     conn.close()
     return questions_df
 
 def load_answers():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(tmp_db_path)
+
     answers_df = pd.read_sql_query("SELECT * FROM candidate_answers", conn)
     conn.close()
     return answers_df
 
 def load_merged_data():
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(tmp_db_path)
+
     query = """
     SELECT 
         c.id AS candidate_id,
