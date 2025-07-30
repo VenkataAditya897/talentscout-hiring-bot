@@ -6,37 +6,28 @@ import shutil
 import os
 import tempfile
 # Adjust this path if your DB is elsewhere
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # project root directory
-DATA_DB_PATH = os.path.join(BASE_DIR, "data", "candidates.db")
-tmp_db_path = os.path.join(tempfile.gettempdir(), "candidates.db")
-
-if not os.path.exists(tmp_db_path):
-    shutil.copyfile(DATA_DB_PATH, tmp_db_path)
+DB_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'candidates.db')
 
 def load_candidates():
-    conn = sqlite3.connect(tmp_db_path)
-
+    conn = sqlite3.connect(DB_PATH)
     candidates_df = pd.read_sql_query("SELECT * FROM candidates", conn)
     conn.close()
     return candidates_df
 
 def load_questions():
-    conn = sqlite3.connect(tmp_db_path)
-
+    conn = sqlite3.connect(DB_PATH)
     questions_df = pd.read_sql_query("SELECT * FROM candidate_questions", conn)
     conn.close()
     return questions_df
 
 def load_answers():
-    conn = sqlite3.connect(tmp_db_path)
-
+    conn = sqlite3.connect(DB_PATH)
     answers_df = pd.read_sql_query("SELECT * FROM candidate_answers", conn)
     conn.close()
     return answers_df
 
 def load_merged_data():
-    conn = sqlite3.connect(tmp_db_path)
-
+    conn = sqlite3.connect(DB_PATH)
     query = """
     SELECT 
         c.id AS candidate_id,
