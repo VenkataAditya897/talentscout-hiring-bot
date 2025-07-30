@@ -1,0 +1,7 @@
+streamlit-chat
+streamlit
+python-dotenv
+groq
+langchain
+langchain-community
+langchain-groq
